@@ -18,7 +18,9 @@ class VehiclesSpider < Kimurai::Base
       item[:exterior_color] = vehicle.css('ul.listing-row__meta li')[0]&.text&.squish.gsub('Ext. Color: ', '')
       item[:interior_color] = vehicle.css('ul.listing-row__meta li')[1]&.text&.squish.gsub('Int. Color: ', '')
       item[:transmission] = vehicle.css('ul.listing-row__meta li')[2]&.text&.squish.gsub('Transmission: ', '')
-      item[:drivetrain]   = vehicle.css('ul.listing-row__meta li')[3]&.text&.squish.gsub('Drivetrain: ', '')
+      item[:drivetrain] = vehicle.css('ul.listing-row__meta li')[3]&.text&.squish.gsub('Drivetrain: ', '')
+      item[:carfx_report_link] = vehicle.css('ul.listing-row__offers > li > span').attr('data-href').value.prepend("https://#{URI.parse(url).host}")
+      item[:seller] = vehicle.css('div.listing-row__dealer > div > div.dealer-name > span').text
 
       Vehicle.where(item).first_or_create
       end
